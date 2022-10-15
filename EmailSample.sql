@@ -13,7 +13,8 @@ CREATE TABLE Employee
                                 ('Mohan','Kumar','m@m.com','09-10-22'),
                                 ('Max','Barry','m@m.com','08-10-22'),
                                 ('James','Barry','j@j.com','06-10-22'),
-                                ('Jerry','Barry','j@j.com','05-10-22')
+                                ('Jerry','Barry','j@j.com','05-10-22'),
+								('John','Adams','j@j.com','05-10-22')
 
 
 
@@ -21,16 +22,20 @@ GO
 CREATE PROCEDURE spDeleteDuplicate
 AS
 DELETE FROM [Employee]
-    WHERE [Register Date] Not IN
-    (
-        SELECT MIN([Register Date]) AS MinRegisterDate
+    WHERE ID Not IN
+(
+   SELECT ID
+FROM Employee
+WHERE [Register Date]  IN
+(
+    SELECT MAX([Register Date]) AS MinRegisterDate
         FROM [Employee]
 		 GROUP BY[Email]
-  
-    );
+)
 
+);
 GO
+
 
 SELECT *FROM Employee;
 exec dbo.spDeleteDuplicate
-
